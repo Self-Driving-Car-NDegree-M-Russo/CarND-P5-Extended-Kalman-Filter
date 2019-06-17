@@ -129,6 +129,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       // Initialize
       ekf_.Init(x_in, P_in, F_in, Hj_, R_radar_, Q_in);
 
+      // modify timestamp
+      previous_timestamp_ = measurement_pack.timestamp_;
+
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       // Initialize state with current laser measurements (px, py) and 0 velocity (vx, vy)

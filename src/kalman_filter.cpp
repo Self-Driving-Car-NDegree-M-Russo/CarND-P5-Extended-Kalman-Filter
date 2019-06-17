@@ -1,5 +1,6 @@
 #include "kalman_filter.h"
 #include <iostream>
+#include <math.h>
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -91,7 +92,25 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 
    // measurement update
    cout << "ext Update 0" << endl;
-   VectorXd y_ = z - H_ * x_;
+
+   // nonlinear updates
+   float px = x_[0];
+   float py = x_[1];
+   float vx = x_[2];
+   float vy = x_[3];
+
+   float h0 = sqrt((px*px)+(py*py));
+   float h1 = atan2(py,px);
+   float h2 = ((px*vx)+(py*vy))/h0;
+
+   VectorXd y_;
+   y_ = VectorXd(3);
+
+   float y0 = z[0] - h0;
+   float y1 = z[1] - h1;
+   float y2 = z[2] - h2;
+
+   y_ << y0, y1, y2;
 
    cout << "ext Update 1" << endl;
    MatrixXd Ht_ = H_.transpose();
