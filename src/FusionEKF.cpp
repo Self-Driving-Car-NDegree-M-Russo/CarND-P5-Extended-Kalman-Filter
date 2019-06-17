@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Eigen/Dense"
 #include "tools.h"
+#include <math.h>
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -32,6 +33,15 @@ FusionEKF::FusionEKF() {
               0, 0.0009, 0,
               0, 0, 0.09;
 
+  //measurement matrix - laser
+  H_laser_ << 1, 0, 0, 0,
+              0, 1, 0, 0;
+
+  //measuremet matrix - radar
+  //NOTE: this will be overwritten by the calculation of the Jacobian
+  Hj_ << 0, 0, 0, 0,
+         0, 0, 0, 0,
+         0, 0, 0, 0;
   /**
    * TODO: Finish initializing the FusionEKF.
    * TODO: Set the process and measurement noises
@@ -51,23 +61,94 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    */
   if (!is_initialized_) {
     /**
-     * TODO: Initialize the state ekf_.x_ with the first measurement.
-     * TODO: Create the covariance matrix.
-     * You'll need to convert radar from polar to cartesian coordinates.
+     * In case the filter is not initialized, it will have to be based on the current state.
+     * The matrices to use will be those defined in the constructor, plus the process and covariance
+     * matrices, that for the initialization will be put to:
+     *  - All zeros for Q
+     *  - The diagonal matrix for F
+     *  _ A high value for P
      */
 
     // first measurement
     cout << "EKF: " << endl;
-    ekf_.x_ = VectorXd(4);
-    ekf_.x_ << 1, 1, 1, 1;
+
+    // Declaration of variables
+    float px = 0.0;
+    float py = 0.0;
+    float vx = 0.0;
+    float vy = 0.0;
+    VectorXd x_in;
+    MatrixXd Q_in;
+    MatrixXd F_in;
+    MatrixXd P_in;
+
+    // Set dimensions
+    x_in = VectorXd(4);
+    Q_in = MatrixXd(4,4);
+    F_in = MatrixXd(4,4);
+    P_in = MatrixXd(4,4);
+
+    // Initialize matrixes to 0
+    Q_in << 0.0, 0.0, 0.0, 0.0,
+            0.0, 0.0, 0.0, 0.0,
+            0.0, 0.0, 0.0, 0.0,
+            0.0, 0.0, 0.0, 0.0;
+
+    F_in << 1.0, 0.0, 0.0, 0.0,
+            0.0, 1.0, 0.0, 0.0,
+            0.0, 0.0, 1.0, 0.0,
+            0.0, 0.0, 0.0, 1.0;
+
+    P_in << 1000.0, 0.0, 0.0, 0.0,
+            0.0, 1000.0, 0.0, 0.0,
+            0.0, 0.0, 1000.0, 0.0,
+            0.0, 0.0, 0.0, 1000.0;
+
+    // Initilaize velocity
+    vx = 0.0;
+    vy = 0.0;
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
-      // TODO: Convert radar from polar to cartesian coordinates 
-      //         and initialize state.
+      // Initialize state starting from radar measurements (rho, theta) and convert from polar to cartesian
+      // Initial velocity is assumed = 0
+
+      cout << "RADAR " << endl;
+
+      float rho = measurement_pack.raw_measurements_[0];
+      cout << "rho: " << rho << endl;
+
+      float theta = measurement_pack.raw_measurements_[1];
+      cout << "theta: " << theta << endl;
+
+      px = rho * cos(theta);
+      py = rho * sin(theta);
+
+      // Initial state
+      x_in << px, py, vx, vy;
+
+      // Initialize
+      ekf_.Init(x_in, P_in, F_in, Hj_, R_radar_, Q_in);
 
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
-      // TODO: Initialize state.
+      // Initialize state with current laser measurements (px, py) and 0 velocity (vx, vy)
+
+      cout << "LIDAR " << endl;
+
+      px = measurement_pack.raw_measurements_[0];
+      cout << "px: " << px << endl;
+
+      py = measurement_pack.raw_measurements_[1];
+      cout << "py: " << py << endl;
+
+      // Initial state
+      x_in << px, py, vx, vy;
+
+      // Initialize
+      ekf_.Init(x_in, P_in, F_in, H_laser_, R_laser_, Q_in);
+
+      // modify timestamp
+      previous_timestamp_ = measurement_pack.timestamp_;
 
     }
 
@@ -87,7 +168,51 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    * Use noise_ax = 9 and noise_ay = 9 for your Q matrix.
    */
 
+  long long current_timestamp_ = measurement_pack.timestamp_;
+  float elapsed_time = (current_timestamp_ - previous_timestamp_)/1000000.0;
+
+  cout << "current_timestamp_  = " << current_timestamp_ << endl;
+  cout << "previous_timestamp_  = " << previous_timestamp_ << endl;
+  cout << "elapsed_time = " << elapsed_time << endl;
+
+  float noise_ax = 9.0; // sigma_square ax
+  float noise_ay = 9.0; // sigma_square ay
+
+  MatrixXd Q_p;
+  MatrixXd F_p;
+
+  Q_p = MatrixXd(4,4);
+  F_p = MatrixXd(4,4);
+
+  // helping coefficients
+  float c1 = (pow(elapsed_time,4.0))/4.0;
+  float c2 = (pow(elapsed_time,3.0))/2.0;
+  float c3 = pow(elapsed_time, 2.0);
+
+  // Update Q, F
+  Q_p << (c1*noise_ax), 0.0, (c2*noise_ax), 0.0,
+         0.0, (c1*noise_ay), 0.0, (c2*noise_ay),
+         (c2*noise_ax), 0.0, (c3*noise_ax), 0.0,
+         0.0, (c2*noise_ay), 0.0, (c3*noise_ay);
+
+  F_p << 1.0, 0.0, elapsed_time, 0.0,
+         0.0, 1.0, 0.0, elapsed_time,
+         0.0, 0.0, 1.0, 0.0,
+         0.0, 0.0, 0.0, 1.0;
+
+
+  ekf_.F_ = F_p;
+  ekf_.Q_ = Q_p;
+
+  cout << "pre-pred x_ = " << ekf_.x_ << endl;
+  cout << "pre-pred P_ = " << ekf_.P_ << endl;
+  cout << "pre-pred F_ = " << ekf_.F_ << endl;
+  cout << "pre-pred Q_ = " << ekf_.Q_ << endl;
+
   ekf_.Predict();
+
+  cout << "x_ = " << ekf_.x_ << endl;
+  cout << "P_ = " << ekf_.P_ << endl;
 
   /**
    * Update
@@ -100,12 +225,35 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    */
 
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
-    // TODO: Radar updates
+    // Radar updates
+    // Nonlinear measurements require EKF update
+
+    cout << "RADAR " << endl;
+
+    //Update Jacobian
+    Hj_ = tools.CalculateJacobian(ekf_.x_);
+
+    ekf_.H_ = Hj_;
+    ekf_.R_ = R_radar_;
+
+    ekf_.UpdateEKF(measurement_pack.raw_measurements_);
+
 
   } else {
-    // TODO: Laser updates
+    // Laser updates
+    // Simple KF update mechanism can be used for linear measurements
+
+    cout << "LIDAR " << endl;
+
+    ekf_.H_ = H_laser_;
+    ekf_.R_ = R_laser_;
+
+    ekf_.Update(measurement_pack.raw_measurements_);
 
   }
+
+  // modify timestamp
+  previous_timestamp_ = measurement_pack.timestamp_;
 
   // print the output
   cout << "x_ = " << ekf_.x_ << endl;
