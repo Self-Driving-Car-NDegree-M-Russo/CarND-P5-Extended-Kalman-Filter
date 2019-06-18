@@ -112,13 +112,13 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       // Initialize state starting from radar measurements (rho, theta) and convert from polar to cartesian
       // Initial velocity is assumed = 0
 
-      cout << "RADAR " << endl;
+      //cout << "RADAR " << endl;
 
       float rho = measurement_pack.raw_measurements_[0];
-      cout << "rho: " << rho << endl;
+      //cout << "rho: " << rho << endl;
 
       float theta = measurement_pack.raw_measurements_[1];
-      cout << "theta: " << theta << endl;
+      //cout << "theta: " << theta << endl;
 
       px = rho * cos(theta);
       py = rho * sin(theta);
@@ -129,20 +129,17 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       // Initialize
       ekf_.Init(x_in, P_in, F_in, Hj_, R_radar_, Q_in);
 
-      // modify timestamp
-      previous_timestamp_ = measurement_pack.timestamp_;
-
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       // Initialize state with current laser measurements (px, py) and 0 velocity (vx, vy)
 
-      cout << "LIDAR " << endl;
+      //cout << "LIDAR " << endl;
 
       px = measurement_pack.raw_measurements_[0];
-      cout << "px: " << px << endl;
+      //cout << "px: " << px << endl;
 
       py = measurement_pack.raw_measurements_[1];
-      cout << "py: " << py << endl;
+      //cout << "py: " << py << endl;
 
       // Initial state
       x_in << px, py, vx, vy;
@@ -150,10 +147,10 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       // Initialize
       ekf_.Init(x_in, P_in, F_in, H_laser_, R_laser_, Q_in);
 
-      // modify timestamp
-      previous_timestamp_ = measurement_pack.timestamp_;
-
     }
+
+    // modify timestamp
+    previous_timestamp_ = measurement_pack.timestamp_;
 
     // done initializing, no need to predict or update
     is_initialized_ = true;
@@ -175,8 +172,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   float elapsed_time = (current_timestamp_ - previous_timestamp_)/1000000.0;
 
   cout << "current_timestamp_  = " << current_timestamp_ << endl;
-  cout << "previous_timestamp_  = " << previous_timestamp_ << endl;
-  cout << "elapsed_time = " << elapsed_time << endl;
+  //cout << "previous_timestamp_  = " << previous_timestamp_ << endl;
+  //cout << "elapsed_time = " << elapsed_time << endl;
 
   float noise_ax = 9.0; // sigma_square ax
   float noise_ay = 9.0; // sigma_square ay
@@ -207,15 +204,15 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   ekf_.F_ = F_p;
   ekf_.Q_ = Q_p;
 
-  cout << "pre-pred x_ = " << ekf_.x_ << endl;
-  cout << "pre-pred P_ = " << ekf_.P_ << endl;
-  cout << "pre-pred F_ = " << ekf_.F_ << endl;
-  cout << "pre-pred Q_ = " << ekf_.Q_ << endl;
+  //cout << "pre-pred x_ = " << ekf_.x_ << endl;
+  //cout << "pre-pred P_ = " << ekf_.P_ << endl;
+  //cout << "pre-pred F_ = " << ekf_.F_ << endl;
+  //cout << "pre-pred Q_ = " << ekf_.Q_ << endl;
 
   ekf_.Predict();
 
-  cout << "x_ = " << ekf_.x_ << endl;
-  cout << "P_ = " << ekf_.P_ << endl;
+  cout << "PREDICTED x_ = " << ekf_.x_ << endl;
+  cout << "PREDICTED P_ = " << ekf_.P_ << endl;
 
   /**
    * Update
@@ -231,7 +228,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     // Radar updates
     // Nonlinear measurements require EKF update
 
-    cout << "RADAR " << endl;
+    cout << "RADAR measurements " << measurement_pack.raw_measurements_ << endl;
 
     //Update Jacobian
     Hj_ = tools.CalculateJacobian(ekf_.x_);
@@ -246,7 +243,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     // Laser updates
     // Simple KF update mechanism can be used for linear measurements
 
-    cout << "LIDAR " << endl;
+    cout << "LIDAR measurements " << measurement_pack.raw_measurements_ << endl;
 
     ekf_.H_ = H_laser_;
     ekf_.R_ = R_laser_;
