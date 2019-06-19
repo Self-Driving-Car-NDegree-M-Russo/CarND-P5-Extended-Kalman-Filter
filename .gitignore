@@ -1,7 +1,6 @@
 # Don't track content of these folders
 build/
 
-
 # Compiled source #
 ###################
 *.com
@@ -12,3 +11,8 @@ build/
 *.so
 
 *.so
+
+# CLion generated files
+src/.idea
+src/cmake-build-debug
+src/CMakeLists.txt
