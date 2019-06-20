@@ -6,7 +6,7 @@ Overview:
 
 This Project is submitted as part of the Udacity Self-Driving Car Nanodegree.
 
-For it the goal is to write C++ code implementing an Extended Kalman Filter to estimate the state of a moving object of interest with noisy lidar and radar measurements.
+For it the goal is to write C++ code implementing an Extended Kalman Filter to estimate the state of a moving object of interest, starting from noisy lidar and radar measurements.
 
 The source code for this project, is submitted as part of this Git repo (in the [src](/src)) folder. A detailed explanation describing the parts that were modified and how does it work is provided in a separate writeup, that details also the results of the filter.  
 
@@ -29,6 +29,9 @@ Other important dependencies are:
   * Mac: same deal as make - [install Xcode command line tools](https://developer.apple.com/xcode/features/)
   * Windows: recommend using [MinGW](http://www.mingw.org/)
   
+---
+
+
 Once the install for uWebSocketIO is complete, the main program can be built and run by doing the following from the project top directory.
 
 1. mkdir build
