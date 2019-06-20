@@ -2,13 +2,11 @@
 ## Extended Kalman Filter Project
 
 
-The goal of this project is the implementation, in C++ of an Extended Kalman Filter capable of tracking a vehicle receiving in input measurements from both a Radar and a Lidar sensor, both affected by noise.
+The goal of this project is the implementation, in C++, of an Extended Kalman Filter capable of tracking a vehicle receiving in input measurements from both a Radar and a Lidar sensor, both affected by noise.
+
+The source code is contained in the [src](./src) folder in this git repo. It is the evolution of a starter project provided directly by Udacity, where three files where modified: [FusionEKF.cpp](./src/FusionEKF.cpp), [kalman_filter.cpp](./src/kalman_filter.cpp) and [tools.cpp](./src/tools.cpp). The other files have been left fundamentally unchanged.
 
 
-
-The Python script containing the Network and the training steps is [model.py](./model.py), and it will be analyzed here in the following. This Git repo contains also another script ([drive.py](./drive.py)) that was provided by the Udacity team and was used to connect the model to the simulator to allow autonomous driving.
-
-Here below I will give more details about the experience and the design in independent sections dedicated to Data Collection, Model Design and Training and Autonomus Driving Results.
 
 [//]: # (Image References)
 
