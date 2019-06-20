@@ -82,7 +82,11 @@ typed from the ``build`` folder.
 The EKF code will look open a WebSocket server trying to connect to a data source, and that will be the Udacity [simulator](https://github.com/udacity/self-driving-car-sim/releases).
 Two different datasets can be simulated, and in both cases we should expect a good trajectory reconstruction. The following pictres show two screenshots from the simulator, for the final datapoint in both datasets. 
 
-There is a [video](./video.mp4) file provided in this Git repo that shows a screen capture of the simulator window while running the model: in order to limit the size of the file and facilitate the upload I have reduced the resolution and icreased the speed at which the track is completed (temporarily modifying the `set_speed` value in line 47 of [drive.py](./drive.py) from 9 to 15).
+Final Screenshot - Dataset 1    |  Final Screenshot - Dataset 2
+:-------------------------:|:-------------------------:
+![alt text][image1] |  ![alt text][image2]
+
+
 
 ---
 ## Conclusions and Further Notes
