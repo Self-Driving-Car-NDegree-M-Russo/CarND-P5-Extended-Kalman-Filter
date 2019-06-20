@@ -1,10 +1,10 @@
 
-## Behavioral Cloning Project
+## Extended Kalman Filter Project
 
 
-The goal of this project is the design, training and testing of a Convolutional Neural Network model built using [Keras](https://keras.io/).
+The goal of this project is the implementation, in C++ of an Extended Kalman Filter capable of tracking a vehicle receiving in input measurements from both a Radar and a Lidar sensor, both affected by noise.
 
-The main intent is to implement behavioral cloning from a human driver, hence the input data will be generated through a computer simulator. The user will have to drive the vehicle along a specified track through steering and acceleration/deceleration commands. During this process, images will be saved emulating what would be captured by 3 cameras mounted on the front of the car (left/middle/right). These images will then be used to train an appriate CNN, and the results of the training will be saved as a model to be connected to the same simulator used for the data collection. The model will output the steering angle based on the images captured, while the speed is kept constant through a PID controller.
+
 
 The Python script containing the Network and the training steps is [model.py](./model.py), and it will be analyzed here in the following. This Git repo contains also another script ([drive.py](./drive.py)) that was provided by the Udacity team and was used to connect the model to the simulator to allow autonomous driving.
 
@@ -12,8 +12,8 @@ Here below I will give more details about the experience and the design in indep
 
 [//]: # (Image References)
 
-[image1]: ./images/Video_extract.png "Video Snapshot"
-[image2]: ./images/02-guide-how-transfer-learning-v3-01.png "Guide to learning"
+[image1]: ./pictures/Dataset_1_Final_Screenshot.png "Dataset 1 Final Results Screenshot"
+[image2]: ./pictures/Dataset_2Final_Screenshot.png "Dataset 2 Final Results Screenshot"
 
 ---
 ## Data Collection
