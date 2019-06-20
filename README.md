@@ -1,4 +1,4 @@
-## Extended Kalman Filter
+# Extended Kalman Filter
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
 Overview:
@@ -8,7 +8,7 @@ This Project is submitted as part of the Udacity Self-Driving Car Nanodegree.
 
 For it the goal is to write C++ code implementing an Extended Kalman Filter to estimate the state of a moving object of interest with noisy lidar and radar measurements.
 
-The source code for this project, is submitted as part of this Git repo (in the [src](/src) folder. A detailed explanation describing the parts that were modified and how does it work is provided in a separate writeup, that details also the results of the filter.  
+The source code for this project, is submitted as part of this Git repo (in the [src](/src)) folder. A detailed explanation describing the parts that were modified and how does it work is provided in a separate writeup, that details also the results of the filter.  
 
 Dependencies:
 ---
