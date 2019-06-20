@@ -51,10 +51,13 @@ FusionEKF::FusionEKF() {
 FusionEKF::~FusionEKF() {}
 
 void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
+  
   /**
    * Initialization
    */
+  
   if (!is_initialized_) {
+    
     /**
      * In case the filter is not initialized, it will have to be based on the current state.
      * The matrices to use will be those defined in the constructor, plus the process and covariance
