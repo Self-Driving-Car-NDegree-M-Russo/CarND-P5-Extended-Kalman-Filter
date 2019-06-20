@@ -18,12 +18,12 @@ The following sections of this writeup will provide details on the filter operat
 
 The data source for this EKF will be the Udacity [simulator](https://github.com/udacity/self-driving-car-sim/releases).
 
-This simulator makes use of data defined accordingly to a specific data format, an example of which is provided through 
-the [data file](./data/obj_pose-laser-radar-synthetic-input.txt) provided with this repo, and then feed them to the filter one line at a time. 
+This simulator makes use of data defined accordingly to a specific data format, an example of which is shown through 
+the [data file](./data/obj_pose-laser-radar-synthetic-input.txt) provided with this repo, and then feeds them to the filter one line at a time. 
 
-Main points about the data are:
+In the data file:
 
-* Each row in the file represents a sensor measurement where the first column tells you if the measurement comes from radar (R) or lidar (L).
+* Each row represents a sensor measurement where the first column tells you if the measurement comes from radar (R) or lidar (L).
 * For a row containing radar data, the columns are: sensor_type, rho_measured, phi_measured, rhodot_measured, timestamp, x_groundtruth, y_groundtruth, vx_groundtruth, vy_groundtruth, yaw_groundtruth, yawrate_groundtruth.
 * For a row containing lidar data, the columns are: sensor_type, x_measured, y_measured, timestamp, x_groundtruth, y_groundtruth, vx_groundtruth, vy_groundtruth, yaw_groundtruth, yawrate_groundtruth.
 
