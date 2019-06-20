@@ -69,15 +69,18 @@ Furthermore:
 * The used optimizer is Adam ([model.py](./model.py), line 236);
 * After a couple of tries, I decided to settle for 2 Epochs, with a final accuracy for the model of 98.13%. The total training time was about 40 minutes on a cloud-hosted GPU. 
 
-## Autonomous Driving Results
+## Kalman Filter Tracking Results
 
-The output of the previous training is saved in this Git repo as [model.h5](./model.h5) and can be used to drive the same simulator used for data generation through the [drive.py](./drive.py) script, originally provided by Udacity. The syntax to use to run the model is:
+Once the code is compiled it can be easily run through the command
 
 ```sh
-python drive.py model.h5
+./ExtendedKF
 ```
 
-The simulator then can be started in "Autonomous Mode".
+typed from the ``build`` folder.
+
+The EKF code will look open a WebSocket server trying to connect to a data source, and that will be the Udacity [simulator](https://github.com/udacity/self-driving-car-sim/releases).
+Two different datasets can be simulated, and in both cases we should expect a good trajectory reconstruction. The following pictres show two screenshots from the simulator, for the final datapoint in both datasets. 
 
 There is a [video](./video.mp4) file provided in this Git repo that shows a screen capture of the simulator window while running the model: in order to limit the size of the file and facilitate the upload I have reduced the resolution and icreased the speed at which the track is completed (temporarily modifying the `set_speed` value in line 47 of [drive.py](./drive.py) from 9 to 15).
 
