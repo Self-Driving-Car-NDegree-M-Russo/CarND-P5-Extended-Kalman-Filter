@@ -2,7 +2,7 @@
 ## Extended Kalman Filter Project
 
 
-The goal of this project is the implementation, in C++, of an Extended Kalman Filter capable of tracking a vehicle receiving in input measurements from both a Radar and a Lidar sensor, both affected by noise.
+The goal of this project is the implementation, in C++, of an Extended Kalman Filter (EKF) capable of tracking a vehicle using as input measurements from both a Radar and a Lidar sensor, both affected by noise.
 
 The source code is contained in the [src](./src) folder in this git repo. It is the evolution of a starter project provided directly by Udacity, where three files where modified: [FusionEKF.cpp](./src/FusionEKF.cpp), [kalman_filter.cpp](./src/kalman_filter.cpp) and [tools.cpp](./src/tools.cpp). The other files have been left fundamentally unchanged.
 
@@ -80,27 +80,15 @@ Once the code is compiled it can be easily run through the command
 typed from the ``build`` folder.
 
 The EKF code will look open a WebSocket server trying to connect to a data source, and that will be the Udacity [simulator](https://github.com/udacity/self-driving-car-sim/releases).
-Two different datasets can be simulated, and in both cases we should expect a good trajectory reconstruction. The following pictres show two screenshots from the simulator, for the final datapoint in both datasets. 
+Two different datasets can be simulated, and in both cases we should expect a good trajectory reconstruction. The following pictures show two screenshots from the simulator, for the final datapoint in both datasets. 
 
 Final Screenshot - Dataset 1    |  Final Screenshot - Dataset 2
 :-------------------------:|:-------------------------:
 ![alt text][image1] |  ![alt text][image2]
 
-
+In both cases Lidar measurements are red circles, Radar measurements are blue circles and the green triangles represent the  trajectory estimation from the EKF.
+Moreover, the screenshots show the final RMS error position and velocity, in both x and y directions. The requirement for the project is for these value to be below `[.11, .11, 0.52, 0.52]`, and, as it can be seen, this requirement is satisfied.
 
 ---
 ## Conclusions and Further Notes
 
-As it can be seen from the video, with these combination of Data sets/Model design the vehicle is able to complete at least one lap on the track. I have actually completed several laps without issues.
-
-There is still some tendency to suboptimal behavior towards the end of the circuit, after the last "chicane" where the vehicle tends to drift too much to its left: a screenshot is here below: 
-
-![alt text][image1]
-
-As an attempt to fix the problem I collected a couple of datasets focusing on that part of the track specifically and trying either to execute it optimally _or_ to emulate a corrective action, with the vehicle starting in an off-nominal poistion and then driven to the middle of the lane. However this did not improve the behavior of the model and actually led to the vehicle driving off the track in other parts of it.
-As said in the Data Collection section, the definition of the appropriate data was indeed one of the most delicate parts of the project: further improvements in this sense could focus both on identifying an appropriate dataset or in verifying if the network design could be improved. As an option, for example, Dropout layers could be introduced: the low resilience behavior shown seems to indicate some degree of overfitting.
-
-Another interesting exercise would be to verify the reusbility of the model by retraining for the second track available as part of the simulator. This case, in fact, would be an example of transfer learning with _Similar_ datasets (left-hand side diagram here below, from the Udacity classroom):
-
-
-As such, with the appropriate data set it would require only fine tuning, hence reducing the effort needed for training.
