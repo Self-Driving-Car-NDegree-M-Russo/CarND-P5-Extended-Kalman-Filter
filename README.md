@@ -8,7 +8,7 @@ This Project is submitted as part of the Udacity Self-Driving Car Nanodegree.
 
 For it the goal is to write C++ code implementing an Extended Kalman Filter to estimate the state of a moving object of interest, starting from noisy lidar and radar measurements.
 
-The source code for this project, is submitted as part of this Git repo (in the [src](/src) folder). A detailed explanation is provided in a separate writeup, that details also the results of the filter.  
+The source code for this project, is submitted as part of this Git repo (in the [src](/src) folder). A detailed explanation is provided in a separate [writeup](Extended_Kalman_filter_writeup.md), that documents also the results of the filter.  
 
 Dependencies:
 ---
