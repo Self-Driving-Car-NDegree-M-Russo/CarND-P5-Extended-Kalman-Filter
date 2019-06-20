@@ -77,7 +77,7 @@ The measurements are processed through the command in line 111:
 
 ## Initialization
 
-The first thing that happens to the filter is to have its state initialized at the value of the first measurement ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 49-155).
+The first thing that happens to the filter is to have its state initialized at the value of the first measurement ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 59-155).
 
 ## Prediction
 
