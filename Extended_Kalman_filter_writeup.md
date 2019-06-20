@@ -68,6 +68,8 @@ The ground truth is read in lines 94-108:
           ground_truth.push_back(gt_values);
 ```
 
+## Initialization
+
 ## Prediction
 
 ## Estimation
