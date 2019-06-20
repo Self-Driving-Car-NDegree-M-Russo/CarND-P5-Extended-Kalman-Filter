@@ -24,6 +24,12 @@ The following sections of this writeup will provide details on the filter operat
 
 ## Compiling the Code
 
+The code is intended to be compiled using CMake and Make. After having cloned this repo and taken care of the dependencies outlined in the repo [README](./README.md), you should just need to: 
+
+1. Make a build directory: `mkdir build && cd build`
+2. Compile: `cmake .. && make` 
+   * On windows, you may need to run: `cmake .. -G "Unix Makefiles" && make`
+
 ## Kalman Filter Tracking Results
 
 Once the code is compiled it can be easily run through the command
