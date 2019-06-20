@@ -68,7 +68,16 @@ The ground truth is read in lines 94-108:
           ground_truth.push_back(gt_values);
 ```
 
+The measurements are processed through the command in line 111:
+
+```sh
+          // Call ProcessMeasurement(meas_package) for Kalman filter
+          fusionEKF.ProcessMeasurement(meas_package);
+```
+
 ## Initialization
+
+The first thing that happens to the filter is to have its state initialized at the value of the first measurement ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 49-155).
 
 ## Prediction
 
