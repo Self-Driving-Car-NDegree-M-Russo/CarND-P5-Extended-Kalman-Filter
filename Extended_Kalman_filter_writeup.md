@@ -11,7 +11,7 @@ The following sections of this writeup will provide details on the filter operat
 [//]: # (Image References)
 
 [image1]: ./pictures/Dataset_1_Final_Screenshot.png "Dataset 1 Final Results Screenshot"
-[image2]: ./pictures/Dataset_2Final_Screenshot.png "Dataset 2 Final Results Screenshot"
+[image2]: ./pictures/Dataset_2_Final_Screenshot.png "Dataset 2 Final Results Screenshot"
 
 ---
 ## Data Collection
@@ -102,6 +102,5 @@ As said in the Data Collection section, the definition of the appropriate data w
 
 Another interesting exercise would be to verify the reusbility of the model by retraining for the second track available as part of the simulator. This case, in fact, would be an example of transfer learning with _Similar_ datasets (left-hand side diagram here below, from the Udacity classroom):
 
-![alt text][image2]
 
 As such, with the appropriate data set it would require only fine tuning, hence reducing the effort needed for training.
