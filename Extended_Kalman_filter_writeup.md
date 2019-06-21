@@ -2,7 +2,7 @@
 ## Extended Kalman Filter Project
 
 
-The goal of this project is the implementation, in C++, of an Extended Kalman Filter (EKF) capable of tracking a vehicle using as input measurements from both a Radar and a Lidar sensor, both affected by noise.
+The goal of this project is the implementation, in C++, of an Extended Kalman Filter (EKF) capable of tracking a vehicle using as input measurements from both a Radar and a Lidar sensor, both affected by noise. The nonlinear nature of the problem is a consequence of the fact that the Radar sensor is capable of measuring position in terms of radial coordinates, while the Lidar measures directly cartesian ones. 
 
 The source code is contained in the [src](./src) folder in this git repo. It is the evolution of a starter project provided directly by Udacity, where three files where modified: [FusionEKF.cpp](./src/FusionEKF.cpp), [kalman_filter.cpp](./src/kalman_filter.cpp) and [tools.cpp](./src/tools.cpp). The other files have been left fundamentally unchanged.
 Furthermore, a [PDF document](./Docs/sensor-fusion-ekf-reference.pdf) has been provided as a support describing the equations used/implemented through the code. This was originally part of the Udacity training material provided, and so it is structured following the lessons schedule, but of course the equations still apply.
@@ -103,8 +103,24 @@ Besides the state, the matrices can be intialized also. Specifically:
 
 Other matices are actually defined in the EKF class contructor:
 
+* The measurement noise covariance matrices for both the Laser and Radar have been actualy pre-provided as part of the Udacity starter code, and represent the charactirstics of the sensors ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 27-34).
+* The measurement matrix for the Lidar case is a constant (2x4) ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 5, eq. (42)), and is introduced in [FusionEKF.cpp](./src/FusionEKF.cpp), lines 36-38.
+* Finally, the measurement matrix for the Radar case will actually have to be calculated at every meadurement, given the nonlinear nature of the sensor. Initialization is just to a null (3x4) matrix ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 40-44).
 
+With all the state and the matrices defined, the initialization happens by calling the `Init` method defined in [kalman_filter.cpp](./src/kalman_filter.cpp), lines 19-28. The actual parameters passed will depend on the nature of the first measurement. For example, in case of Radar we have ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 120,121)
 
+```sh
+      // Initialize
+      ekf_.Init(x_in, P_in, F_in, Hj_, R_radar_, Q_in);
+```
+
+while, for Lidar ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 134,135)
+
+```sh
+      // Initialize
+      ekf_.Init(x_in, P_in, F_in, H_laser_, R_laser_, Q_in);
+```
+      
 ## Prediction
 
 ## Estimation
