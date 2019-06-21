@@ -107,14 +107,14 @@ Other matices are actually defined in the EKF class contructor:
 * The measurement matrix for the Lidar case is a constant (2x4) ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 5, eq. (42)), and is introduced in [FusionEKF.cpp](./src/FusionEKF.cpp), lines 36-38.
 * Finally, the measurement matrix for the Radar case will actually have to be calculated at every meadurement, given the nonlinear nature of the sensor. Initialization is just to a null (3x4) matrix ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 40-44).
 
-With all the state and the matrices defined, the initialization happens by calling the `Init` method defined in [kalman_filter.cpp](./src/kalman_filter.cpp), lines 19-28. The actual parameters passed will depend on the nature of the first measurement. For example, in case of Radar we have ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 120,121)
+With all the state and the matrices defined, the initialization happens by calling the `Init` method defined in [kalman_filter.cpp](./src/kalman_filter.cpp), lines 19-28. The actual parameters passed will depend on the nature of the first measurement; for example, in case of Radar we have ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 120,121):
 
 ```sh
       // Initialize
       ekf_.Init(x_in, P_in, F_in, Hj_, R_radar_, Q_in);
 ```
 
-while, for Lidar ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 134,135)
+while, for Lidar ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 134,135):
 
 ```sh
       // Initialize
