@@ -5,8 +5,9 @@
 The goal of this project is the implementation, in C++, of an Extended Kalman Filter (EKF) capable of tracking a vehicle using as input measurements from both a Radar and a Lidar sensor, both affected by noise.
 
 The source code is contained in the [src](./src) folder in this git repo. It is the evolution of a starter project provided directly by Udacity, where three files where modified: [FusionEKF.cpp](./src/FusionEKF.cpp), [kalman_filter.cpp](./src/kalman_filter.cpp) and [tools.cpp](./src/tools.cpp). The other files have been left fundamentally unchanged.
+Furthermore, a [PDF document](./Docs/sensor-fusion-ekf-reference.pdf) has been provided as a support describing the equations used/implemented through the code. This was originally part of the Udacity training material provided, and so it is structured following the lessons schedule, but of course the equations still apply.
 
-The following sections of this writeup will provide details on the filter operations and the data flow, and in doing so the fundamental pieces of the code will be explained. A final section will show the results of the filter running against two different data sets.
+The following sections of this writeup will provide details on the filter operations and the data flow, and in doing so the fundamental pieces of the code will be explained. A final section will show the results of the filter running against two different data sets. 
 
 [//]: # (Image References)
 
@@ -78,6 +79,21 @@ The measurements are processed through the command in line 111:
 ## Initialization
 
 The first thing that happens to the filter is to have its state initialized at the value of the first measurement ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 59-155).
+
+The EKF implementation has a state composed by 4 variables: position and velocity of the tracked object, in 2D ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 1, eq. (6)). In case of first reading the position can get initialized to the current one of the tracked vehicle, while the velocity can be put to 0. Depending on wether the first measurement is a Radar or a Lidar one some trigonometric decomposition might be needed: this is handled in [FusionEKF.cpp](./src/FusionEKF.cpp), lines 107-137. For example, in the case of Radar we have (lines 111-118):
+
+```sh
+      float rho = measurement_pack.raw_measurements_[0];
+      float theta = measurement_pack.raw_measurements_[1];
+
+      px = rho * cos(theta);
+      py = rho * sin(theta);
+
+      // Initial state
+      x_in << px, py, vx, vy;
+```
+
+NOTE: `vx, vy` are initialized = 0 on lines 76, 77.
 
 ## Prediction
 
