@@ -95,10 +95,15 @@ The EKF implementation has a state composed by 4 variables: position and velocit
 
 NOTE: `vx, vy` are initialized = 0 on lines 76, 77.
 
-Besides the state, the matrices can to be intialized also. Specifically:
+Besides the state, the matrices can be intialized also. Specifically:
 
 * The state matrix F has an expression that depnds on the elapsed time ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 3, eq. (21)). In case of first reading it can be initailized as a (4x4) identity matrix ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 95-99). Its actual value would be calculated and updated when processing next measurements.
 * The process noise covariance matrix also has an expression depending on time ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 4, eq. (40)), but can be initialized to a (4x4) null matrix ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 89-93). Here too, the actual value will be calculated when new measurements become available.
+* The estimation error covariance matrix can be initialized to a "big" value ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 101-105).
+
+Other matices are actually defined in the EKF class contructor:
+
+
 
 ## Prediction
 
