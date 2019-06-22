@@ -1,7 +1,7 @@
 # Extended Kalman Filter
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
-Overview:
+Overview
 ---
 
 This Project is submitted as part of the Udacity Self-Driving Car Nanodegree.
@@ -10,7 +10,7 @@ For it the goal is to write C++ code implementing an Extended Kalman Filter to e
 
 The source code for this project, is submitted as part of this Git repo (in the [src](/src) folder). A detailed explanation is provided in a separate [writeup](Extended_Kalman_filter_writeup.md), that documents also the results of the filter.  
 
-Dependencies:
+Dependencies
 ---
 First of all, this project involves the Udacity Term 2 Simulator which can be downloaded [here](https://github.com/udacity/self-driving-car-sim/releases).
 
