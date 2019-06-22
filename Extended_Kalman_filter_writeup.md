@@ -124,7 +124,7 @@ while, for Lidar ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 134,135):
       
 ## Prediction
 
-After the initial reading has been used to initialize the filter, the subsequent ones can be normally processed, and the first step of the EKF algorithm is the prediction of the state at the teime of the measurement, starting from the previous one. This computation does not depend on the measurements, and so is the same in both Lidar and radar case.
+After the initial reading has been used to initialize the filter, the subsequent ones can be normally processed, and the first step of the EKF algorithm is the prediction of the state, and the estimation error, at the time of the measurement, starting from the previous ones. This computation does not depend on the measurements, and so is the same in both Lidar and radar case.
 
 The equations describing this step are documented in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (11), (12)), and are implemented in the `Predict` method in [kalman_filter.cpp](./src/kalman_filter.cpp), lines 30-45:
 
@@ -138,6 +138,16 @@ The equations describing this step are documented in [Ref. doc](./Docs/sensor-fu
       P_ = F_ * P_ * Ft_ + Q_;
 ```
 
+It is worth noting that in writing these equations the process noise is assumed with mean = 0, and so there is no explicit `u` in the equation for state prediction.
+
+Before the actual execution of this step, however, the state matrix F and the process covariance matrix need to be updated: their expression, in fact, depends on the actual elapsed time since the previous measurement.
+
+The expression for F is documented in ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 3, eq. (21)), while the one for Q is at pg. 4 (eq. (40)). Their implementation can be found in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 151-191), and is imeediately followed by the call to the `Predict` method previously described (lines 193,194).
+
+```sh
+      // Predict
+      ekf_.Predict();
+```
 
 
 ## Estimation
