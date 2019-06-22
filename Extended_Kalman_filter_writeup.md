@@ -124,7 +124,7 @@ while, for Lidar ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 134,135):
       
 ## Prediction
 
-After the initial reading has been used to initialize the filter, the subsequent ones can be normally processed, and the first step of the EKF algorithm is the prediction of the state and the estimation error at the time of the measurement, starting from the previous ones. This computation does not depend on the measurements, and so is the same in both Lidar and radar case.
+After the initial reading has been used to initialize the filter, the subsequent ones can be normally processed, and the first step of the EKF algorithm is the prediction of the state and the estimation error at the time of the measurement, starting from the previous ones. This computation does not depend on the measurements, and so is the same in both Lidar and Radar case.
 
 The equations describing this step are documented in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (11), (12)), and are implemented in the `Predict` method in [kalman_filter.cpp](./src/kalman_filter.cpp), lines 30-45:
 
@@ -195,6 +195,18 @@ The equations for this case have been implemented in a different method (`Update
 ```
 
 ## Accuracy Evaluation
+
+The accuracy of the filter is evaluated at each step by comparing the estimated state with the actual ground tructh expressing the vehicle position and velocity: as explained in the section on Data Input, in fact such real state is part of the data provided in input.
+
+The error is measured in terms of Root Mean Square (RMS). The expression for that can be found in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 11, eq. (97)), end the implementation is part of [tools.cpp](./src/tools.cpp) (lines 14-50).
+
+The method is actually called by [main.cpp](./src/main.cpp), on line 130:
+
+```sh
+    VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
+```
+
+and the output is then displayed of the simulator, as it can be seen in the screenshots part of the Results section.
 
 ## Compiling the Code
 
