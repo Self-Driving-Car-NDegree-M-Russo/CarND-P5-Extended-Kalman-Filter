@@ -159,7 +159,7 @@ Once completed the prediction step, the effect of the measurements can be taken 
 
 The case of Lidar updates is actually the simplest one. This instrument is, in fact, capable of measuring directly the position of the vehicle in cartesian coordinates, so there is no need for linearization of the problem. The equations are implemented in the `Update` method in [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 47-68).
 
-The measurement matrix H and measurement noise matrix R are part of the EKF class constructor (FusionEKF.cpp](./src/FusionEKF.cpp) lines 27-29 and 36-38, respectively), and can be passed to the actual implementation before calling the method, as shown in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 226-231):
+The measurement matrix H and measurement noise matrix R are part of the EKF class constructor [FusionEKF.cpp](./src/FusionEKF.cpp) lines 27-29 and 36-38, respectively), and can be passed to the actual implementation before calling the method, as shown in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 226-231):
 
 ```sh
     // Set H and R appropriately
@@ -198,7 +198,7 @@ The equations for this case have been implemented in a different method (`Update
 
 The accuracy of the filter is evaluated at each step by comparing the estimated state with the actual ground truth expressing the vehicle position and velocity: as explained in the section on [Data Input](./Extended_Kalman_filter_writeup.md#data-input) , such real state is part of the data provided in input.
 
-The error is measured in terms of Root Mean Square (RMS). The expression for that can be found in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 11, eq. (97)), end the implementation is part of [tools.cpp](./src/tools.cpp) (lines 14-50).
+The error is measured in terms of Root Mean Squared (RMS) value. The expression for that can be found in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 11, eq. (97)), end the implementation is part of [tools.cpp](./src/tools.cpp) (lines 14-50).
 
 The method is actually called by [main.cpp](./src/main.cpp), on line 130:
 
