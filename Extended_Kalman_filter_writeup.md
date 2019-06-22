@@ -142,7 +142,7 @@ It is worth noting that in writing these equations the process noise is assumed 
 
 Before the actual execution of this step, however, the state matrix F and the process covariance matrix need to be updated: their expression, in fact, depends on the actual elapsed time since the previous measurement.
 
-The expression for F is documented in ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 3, eq. (21)), while the one for Q is at pg. 4 (eq. (40)). Their implementation can be found in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 151-191), and is imeediately followed by the call to the `Predict` method previously described (lines 193,194).
+The expression for F is documented in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 3, eq. (21)), while the one for Q is at pg. 4 (eq. (40)). Their implementation can be found in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 151-191), and is imeediately followed by the call to the `Predict` method previously described (lines 193,194).
 
 ```sh
       // Predict
