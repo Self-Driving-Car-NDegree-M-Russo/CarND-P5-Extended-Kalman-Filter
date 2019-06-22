@@ -149,13 +149,28 @@ The expression for F is documented in [Ref. doc](./Docs/sensor-fusion-ekf-refere
       ekf_.Predict();
 ```
 
+NOTE: for calculating Q, beyond the elapsed time a measure of the process noise is also needed. The value provided in input by Udacity for this problem is sigma = 9 (sigma squred = 81), as implemented in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 164-165).
+
 ## Estimation
 
 Once completed thr prediction step, the effect of the measurements can be taken into account through the estimation equations, described in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (13), (17)). This step, however, is different depending whether we are receiveing Radar or Lidar measurements, and so we need to discriminate between the two.
 
-*Lidar*
+_Case of Lidar measurements_
 
-*Radar*
+The case of Lidar updates is actually the simplest one. This instrument is, in fact, capable of measuring directly the position of the vehicle in cartesian coordinates, so there is no need for linearization of the problem. The equations are implemented in the `Update` method in [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 47-68).
+
+The measurement matrix H and measurement noise matrix R are part of the EKF class constructor (FusionEKF.cpp](./src/FusionEKF.cpp) lines 27-29 and 36-38, respectively), and can be passed to the actual implementation before calling the method, as shown in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 226-231):
+
+```sh
+    // Set H and R appropriately
+    ekf_.H_ = H_laser_;
+    ekf_.R_ = R_laser_;
+
+    // Update
+    ekf_.Update(measurement_pack.raw_measurements_);
+```
+
+_Case of Radar measurements_
 
 ## Accuracy Evaluation
 
