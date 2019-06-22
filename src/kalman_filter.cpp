@@ -42,7 +42,6 @@ void KalmanFilter::Predict() {
 
   // Predicted P
   P_ = F_ * P_ * Ft_ + Q_;
-
 }
 
 void KalmanFilter::Update(const VectorXd &z) {
