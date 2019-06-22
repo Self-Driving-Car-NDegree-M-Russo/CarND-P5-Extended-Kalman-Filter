@@ -108,14 +108,14 @@ Other matices are actually defined in the EKF class contructor:
 * The measurement matrix for the Lidar case is a constant (2x4) ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 5, eq. (42)), and is introduced in [FusionEKF.cpp](./src/FusionEKF.cpp), lines 36-38.
 * Finally, the measurement matrix for the Radar case will actually have to be calculated at every meadurement, given the nonlinear nature of the sensor. Initialization is just to a null (3x4) matrix ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 40-44).
 
-With all the state and the matrices defined, the initialization happens by calling the `Init` method defined in [kalman_filter.cpp](./src/kalman_filter.cpp), lines 19-28. The actual parameters passed will depend on the nature of the first measurement; for example, in case of Radar we have ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 120,121):
+With all the state and the matrices defined, the initialization happens by calling the `Init` method defined in [kalman_filter.cpp](./src/kalman_filter.cpp), lines 19-28. The actual parameters passed will depend on the nature of the first measurement; for example, in case of Radar we have ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 120, 121):
 
 ```sh
       // Initialize
       ekf_.Init(x_in, P_in, F_in, Hj_, R_radar_, Q_in);
 ```
 
-while, for Lidar ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 134,135):
+while, for Lidar ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 134, 135):
 
 ```sh
       // Initialize
@@ -142,7 +142,7 @@ It is worth noting that in writing these equations the process noise is assumed 
 
 Before the actual execution of this step, however, the state matrix F and the process covariance matrix need to be updated: their expression, in fact, depends on the actual elapsed time since the previous measurement.
 
-The expression for F is documented in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 3, eq. (21)), while the one for Q is at pg. 4 (eq. (40)). Their implementation can be found in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 151-191), and is imeediately followed by the call to the `Predict` method previously described (lines 193,194).
+The expression for F is documented in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 3, eq. (21)), while the one for Q is at pg. 4 (eq. (40)). Their implementation can be found in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 151-191), and is imeediately followed by the call to the `Predict` method previously described (lines 193, 194).
 
 ```sh
       // Predict
@@ -174,7 +174,7 @@ The measurement matrix H and measurement noise matrix R are part of the EKF clas
 
 In case of Radar measurements, some more steps are needed. In this case, in fact, the measurements are in terms of radial coordinates, and so:
 
-* The measurement matrix H is replaced by the jacobian Hj calculated as the derivatives of the nonlinear equations, considered at the current state. The expression for Hj can be found in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 9, eq. (75)), and is implemented in [tools.cpp](./src/tools.cpp) (lines 52-81). This method is then called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 212,213):
+* The measurement matrix H is replaced by the jacobian Hj calculated as the derivatives of the nonlinear equations, considered at the current state. The expression for Hj can be found in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 9, eq. (75)), and is implemented in [tools.cpp](./src/tools.cpp) (lines 52-81). This method is then called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 212, 213):
 
 ```sh
     // Calculate and update Jacobian
