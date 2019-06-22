@@ -66,7 +66,6 @@ void KalmanFilter::Update(const VectorXd &z) {
 
    // Updated P
    P_ = (I - K_ * H_) * P_;
-
 }
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
