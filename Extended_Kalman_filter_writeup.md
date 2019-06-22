@@ -206,7 +206,7 @@ The method is actually called by [main.cpp](./src/main.cpp), on line 130:
     VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
 ```
 
-and the output is then displayed of the simulator, as it can be seen in the screenshots part of the [Results](./Extended_Kalman_filter_writeup.md#kalman-filtertracking-results) section.
+and the output is then displayed by the simulator, as it can be seen in the screenshots part of the [Results](./Extended_Kalman_filter_writeup.md#kalman-filtertracking-results) section.
 
 ## Compiling the Code
 
