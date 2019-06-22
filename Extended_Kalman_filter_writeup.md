@@ -181,7 +181,7 @@ In case of Radar measurements, some more steps are needed. In this case, in fact
     Hj_ = tools.CalculateJacobian(ekf_.x_);
 ```
 
-* The measurement update follows equations (102) and (53) in the [ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 11 and 6, respectively.
+* The measurement update follows equations (102) and (53) in the [ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 11 and 6, respectively).
 
 The equations for this case have been implemented in a different method (`UpdateEKF`) in [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 70-117), that gets called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 215-217):
 
