@@ -155,7 +155,7 @@ NOTE: for calculating Q, beyond the elapsed time a measure of the process noise 
 
 Once completed thr prediction step, the effect of the measurements can be taken into account through the estimation equations, described in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (13), (17)). This step, however, is different depending whether we are receiveing Radar or Lidar measurements, and so we need to discriminate between the two.
 
-_Case of Lidar measurements_
+# _Case of Lidar measurements_
 
 The case of Lidar updates is actually the simplest one. This instrument is, in fact, capable of measuring directly the position of the vehicle in cartesian coordinates, so there is no need for linearization of the problem. The equations are implemented in the `Update` method in [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 47-68).
 
@@ -170,7 +170,7 @@ The measurement matrix H and measurement noise matrix R are part of the EKF clas
     ekf_.Update(measurement_pack.raw_measurements_);
 ```
  
-_Case of Radar measurements_
+# _Case of Radar measurements_
 
 In case of Radar measurements, some more steps are needed. In this case, in fact, the measurements are in terms of radial coordinates, and so:
 
