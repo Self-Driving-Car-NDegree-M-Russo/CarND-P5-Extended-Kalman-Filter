@@ -174,7 +174,7 @@ The measurement matrix H and measurement noise matrix R are part of the EKF clas
 
 In case of Radar measurements, some more steps are needed. In this case, in fact, the measurements from the instrument are in terms of radial coordinates, and so:
 
-* The measurement matrix H is replaced by the jacobian Hj calculated as the derivatives of the Radar nonlinear equations, considered at the current state. The expression for Hj can be found in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 9, eq. (75)), and is implemented in [tools.cpp](./src/tools.cpp) (lines 52-81). This method is then called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 212, 213):
+* The measurement matrix H is replaced by the jacobian Hj calculated as the derivatives of the Radar nonlinear equations, considered at the current state. The expression for Hj can be found in the [ef. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 9, eq. (75)), and is implemented in [tools.cpp](./src/tools.cpp) (lines 52-81). This method is then called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 212, 213):
 
 ```sh
     // Calculate and update Jacobian
@@ -198,7 +198,7 @@ The equations for this case have been implemented in a different method (`Update
 
 The accuracy of the filter is evaluated at each step by comparing the estimated state with the actual ground truth expressing the vehicle position and velocity: as explained in the section on [Data Input](./Extended_Kalman_filter_writeup.md#data-input) , such real state is part of the data provided in input.
 
-The error is measured in terms of Root Mean Squared (RMS) value. The expression for that can be found in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 11, eq. (97)), end the implementation is part of [tools.cpp](./src/tools.cpp) (lines 14-50).
+The error is measured in terms of Root Mean Squared (RMS) value. The expression for that can be found in the [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 11, eq. (97)), end the implementation is part of [tools.cpp](./src/tools.cpp) (lines 14-50).
 
 The method is actually called by [main.cpp](./src/main.cpp), on line 130:
 
