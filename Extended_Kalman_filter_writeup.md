@@ -96,7 +96,7 @@ In case of initial reading, the position can be initialized to the current one o
 
 NOTE: `vx, vy` are initialized = 0 on lines 76, 77.
 
-Besides the state, the matrices can be intialized also. Specifically:
+Besides the state, the matrices have to be intialized also. Specifically:
 
 * The state matrix F has an expression that depnds on the elapsed time ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 3, eq. (21)). In case of first reading it can be initailized as a (4x4) identity matrix ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 95-99). Its actual value would be calculated and updated when processing next measurements.
 * The process noise covariance matrix also has an expression depending on time ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 4, eq. (40)), but can be initialized to a (4x4) null matrix ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 89-93). Here too, the actual value will be calculated when new measurements become available.
@@ -226,7 +226,7 @@ Once the code is compiled it can be easily run through the command
 
 typed from the ``build`` folder.
 
-The EKF code will look open a WebSocket server trying to connect to a data source, and that will be the Udacity [simulator](https://github.com/udacity/self-driving-car-sim/releases).
+The EKF code will look open a WebSocket connection trying to reach to a data source, and that will be the Udacity [simulator](https://github.com/udacity/self-driving-car-sim/releases).
 Two different datasets can be simulated, and in both cases we should expect a good trajectory reconstruction. The following pictures show two screenshots from the simulator, for the final datapoint in both datasets. 
 
 Final Screenshot - Dataset 1    |  Final Screenshot - Dataset 2
