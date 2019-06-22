@@ -74,7 +74,6 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 
    // measurement update
    // nonlinear updates
-
    float px = x_[0];
    float py = x_[1];
    float vx = x_[2];
@@ -83,6 +82,8 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
    float h0 = sqrt((px*px)+(py*py));
 
    float h1 = 0.0;
+   // NOTE: the following if/else helps in dealing with the position from positive to negative y.
+   // This condition has, in fact, shown some non-smooth behavior in simulations
    if (abs(py)>0.05){
      h1 = atan2(py,px);
    } else {
