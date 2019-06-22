@@ -159,7 +159,7 @@ Once completed the prediction step, the effect of the measurements can be taken 
 
 The case of Lidar updates is actually the simplest one. This instrument is, in fact, capable of measuring directly the position of the vehicle in cartesian coordinates, so there is no need for linearization of the problem. The equations are implemented in the `Update` method in [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 47-68).
 
-The measurement matrix H and measurement noise matrix R are part of the EKF class constructor [FusionEKF.cpp](./src/FusionEKF.cpp) lines 27-29 and 36-38, respectively), and can be passed to the actual implementation before calling the method, as shown in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 226-231):
+The measurement matrix H and measurement noise matrix R are part of the EKF class constructor [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 27-29 and 36-38, respectively), and can be passed to the actual implementation before calling the method, as shown in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 226-231):
 
 ```sh
     // Set H and R appropriately
