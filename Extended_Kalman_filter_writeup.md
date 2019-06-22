@@ -80,7 +80,8 @@ The measurements are processed through the command in line 111:
 
 The first thing that happens to the filter is to have its state initialized at the value of the first measurement ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 59-155).
 
-The EKF implementation has a state composed by 4 variables: position and velocity of the tracked object, in 2D ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 2, eq. (18)). In case of first reading the position can get initialized to the current one of the tracked vehicle, while the velocity can be put to 0. Depending on wether the first measurement is a Radar or a Lidar one some trigonometric decomposition might be needed: this is handled in [FusionEKF.cpp](./src/FusionEKF.cpp), lines 107-137. For example, in the case of Radar we have (lines 111-118):
+The EKF implementation has a state composed by 4 variables: position and velocity of the tracked object, in 2D ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 2, eq. (18)). 
+In case of initial reading, the position can be initialized to the current one of the tracked vehicle, while the velocity can be put to 0. Depending on wether the first measurement is a Radar or a Lidar one some trigonometric decomposition might be needed: this is handled in [FusionEKF.cpp](./src/FusionEKF.cpp), lines 107-137. For example, in the case of Radar we have (lines 111-118):
 
 ```sh
       float rho = measurement_pack.raw_measurements_[0];
@@ -122,6 +123,22 @@ while, for Lidar ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 134,135):
 ```
       
 ## Prediction
+
+After the initial reading has been used to initialize the filter, the subsequent ones can be normally processed, and the first step of the EKF algorithm is the prediction of the state at the teime of the measurement, starting from the previous one. This computation does not depend on the measurements, and so is the same in both Lidar and radar case.
+
+The equations describing this step are documented in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (11), (12)), and are implemented in the `Predict` method in [kalman_filter.cpp](./src/kalman_filter.cpp), lines 30-45:
+
+```sh
+      // Predicted State
+      x_ = F_ * x_;
+
+      MatrixXd Ft_ = F_.transpose();
+
+      // Predicted P
+      P_ = F_ * P_ * Ft_ + Q_;
+```
+
+
 
 ## Estimation
 
