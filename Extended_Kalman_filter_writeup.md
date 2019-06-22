@@ -5,9 +5,9 @@
 The goal of this project is the implementation, in C++, of an Extended Kalman Filter (EKF) capable of tracking a vehicle using as input measurements from both a Radar and a Lidar sensor, both affected by noise. The nonlinear nature of the problem is a consequence of the fact that the Radar sensor is capable of measuring position in terms of radial coordinates, while the Lidar measures directly cartesian ones. 
 
 The source code is contained in the [src](./src) folder in this git repo. It is the evolution of a starter project provided directly by Udacity, where three files where modified: [FusionEKF.cpp](./src/FusionEKF.cpp), [kalman_filter.cpp](./src/kalman_filter.cpp) and [tools.cpp](./src/tools.cpp). The other files have been left fundamentally unchanged.
-Furthermore, a [PDF document](./Docs/sensor-fusion-ekf-reference.pdf) has been provided as a support describing the equations used/implemented through the code. This was originally part of the Udacity training material provided, and so it is structured following the lessons schedule, but of course the equations still apply.
+Furthermore, a [PDF document](./Docs/sensor-fusion-ekf-reference.pdf) has been provided as a support describing the equations used/implemented through the code. This was originally part of the Udacity training material, and so it is structured following the lessons schedule, but of course the equations still apply.
 
-The following sections of this writeup will provide details on the filter operations and the data flow, and in doing so the fundamental pieces of the code will be explained. A [Results](Extended_Kalman_filter_writeup.md#kalman-filter-tracking-results) section will show the results of the filter running against two different data sets. 
+The following sections of this writeup will provide details on the filter operations and the data flow, and in doing so the fundamental pieces of the code will be explained. A final [Results](Extended_Kalman_filter_writeup.md#kalman-filter-tracking-results) section will show the results of the filter running against two different data sets. 
 
 [//]: # (Image References)
 
@@ -235,7 +235,3 @@ Final Screenshot - Dataset 1    |  Final Screenshot - Dataset 2
 
 In both cases Lidar measurements are red circles, Radar measurements are blue circles and the green triangles represent the  trajectory estimation from the EKF.
 Moreover, the screenshots show the final RMS error position and velocity, in both x and y directions. The requirement for the project is for these value to be below `[.11, .11, 0.52, 0.52]`, and, as it can be seen, it is satisfied in both cases.
-
----
-## Conclusions and Further Notes
-
