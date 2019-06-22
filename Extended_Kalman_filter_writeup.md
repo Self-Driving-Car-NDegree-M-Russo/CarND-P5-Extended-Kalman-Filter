@@ -153,7 +153,7 @@ NOTE: for calculating Q, beyond the elapsed time a measure of the process noise 
 
 ## Estimation
 
-Once completed thr prediction step, the effect of the measurements can be taken into account through the estimation equations, described in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (13), (17)). This step, however, is different depending whether we are receiveing Radar or Lidar measurements, and so we need to discriminate between the two.
+Once completed the prediction step, the effect of the measurements can be taken into account through the estimation equations, described in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (13), (17)). This step, however, is different depending whether we are receiveing Radar or Lidar measurements, and so we need to discriminate between the two.
 
 ### _Case of Lidar measurements_
 
