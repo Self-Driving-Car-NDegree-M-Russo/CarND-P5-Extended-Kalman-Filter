@@ -226,7 +226,7 @@ Once the code is compiled it can be easily run through the command
 
 typed from the ``build`` folder.
 
-The EKF code will look open a WebSocket connection trying to reach to a data source, and that will be the Udacity [simulator](https://github.com/udacity/self-driving-car-sim/releases).
+The EKF code will open a WebSocket connection trying to reach to a data source, and that will be the Udacity [simulator](https://github.com/udacity/self-driving-car-sim/releases).
 Two different datasets can be simulated, and in both cases we should expect a good trajectory reconstruction. The following pictures show two screenshots from the simulator, for the final datapoint in both datasets. 
 
 Final Screenshot - Dataset 1    |  Final Screenshot - Dataset 2
