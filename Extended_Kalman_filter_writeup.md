@@ -196,7 +196,7 @@ The equations for this case have been implemented in a different method (`Update
 
 ## Accuracy Evaluation
 
-The accuracy of the filter is evaluated at each step by comparing the estimated state with the actual ground tructh expressing the vehicle position and velocity: as explained in the section on Data Input, in fact such real state is part of the data provided in input.
+The accuracy of the filter is evaluated at each step by comparing the estimated state with the actual ground truth expressing the vehicle position and velocity: as explained in the section on D[ata Input](./Extended_Kalman_filter_writeup.md#data-input) , such real state is part of the data provided in input.
 
 The error is measured in terms of Root Mean Square (RMS). The expression for that can be found in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 11, eq. (97)), end the implementation is part of [tools.cpp](./src/tools.cpp) (lines 14-50).
 
@@ -206,7 +206,7 @@ The method is actually called by [main.cpp](./src/main.cpp), on line 130:
     VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
 ```
 
-and the output is then displayed of the simulator, as it can be seen in the screenshots part of the Results section.
+and the output is then displayed of the simulator, as it can be seen in the screenshots part of the [Results](./Extended_Kalman_filter_writeup.md#kalman-filtertracking-results) section.
 
 ## Compiling the Code
 
