@@ -169,8 +169,13 @@ The measurement matrix H and measurement noise matrix R are part of the EKF clas
     // Update
     ekf_.Update(measurement_pack.raw_measurements_);
 ```
-
+ 
 _Case of Radar measurements_
+
+In case of Radar measurements, some more steps are needed. In this case, in fact, the measurements are in terms of radial coordinates, and so:
+
+* The measurement matrix H is replaced by the jacobian Hj calculated as the derivatives of the nonlinear equations, considered at the current state. The expression for Hj can be found in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 9, eq. (75), and is implemented in [tools.cpp](./src/tools.cpp) (lines 52-81).
+
 
 ## Accuracy Evaluation
 
