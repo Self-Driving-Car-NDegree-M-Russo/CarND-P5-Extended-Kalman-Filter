@@ -124,7 +124,7 @@ while, for Lidar ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 134, 135):
       
 ## Prediction
 
-After the initial reading has been used to initialize the filter, the subsequent ones can be normally processed, and the first step of the EKF algorithm is the prediction of the state and the estimation error at the time of the measurement, starting from the previous ones. This computation does not depend on the measurements, and so is the same in both Lidar and Radar case.
+After the initial reading was used to initialize the filter, the subsequent ones can be normally processed, and the first step of the EKF algorithm is the prediction of the state and the estimation error at the time of the measurement, starting from the previous ones. This computation does not depend on the measurements, and so is the same in both Lidar and Radar case.
 
 The equations describing this step are documented in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (11), (12)), and are implemented in the `Predict` method in [kalman_filter.cpp](./src/kalman_filter.cpp), lines 30-45:
 
