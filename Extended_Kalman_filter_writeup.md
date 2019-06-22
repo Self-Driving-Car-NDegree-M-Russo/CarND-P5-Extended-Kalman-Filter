@@ -126,7 +126,7 @@ while, for Lidar ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 134, 135):
 
 After the initial reading was used to initialize the filter, the subsequent ones can be normally processed, and the first step of the EKF algorithm is the prediction of the state and the estimation error at the time of the measurement, starting from the previous ones. This computation does not depend on the measurements, and so is the same in both Lidar and Radar case.
 
-The equations describing this step are documented in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (11), (12)), and are implemented in the `Predict` method in [kalman_filter.cpp](./src/kalman_filter.cpp), lines 30-45:
+The equations describing this step are documented in the [ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (11), (12)), and are implemented in the `Predict` method in [kalman_filter.cpp](./src/kalman_filter.cpp), lines 30-45:
 
 ```sh
       // Predicted State
@@ -142,7 +142,7 @@ It is worth noting that in writing these equations the process noise is assumed 
 
 Before the actual execution of this step, however, the state matrix F and the process covariance matrix Q need to be updated: their expression, in fact, depends on the actual elapsed time since the previous measurement.
 
-The expression for F is documented in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 3, eq. (21)), while the one for Q is at pg. 4 (eq. (40)). Their implementation can be found in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 151-191), and is immediately followed by the call to the `Predict` method previously described (lines 193, 194).
+The expression for F is documented in the [ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 3, eq. (21)), while the one for Q is at pg. 4 (eq. (40)). Their implementation can be found in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 151-191), and is immediately followed by the call to the `Predict` method previously described (lines 193, 194).
 
 ```sh
       // Predict
@@ -153,7 +153,7 @@ NOTE: for calculating Q, beyond the elapsed time a measure of the process noise 
 
 ## Estimation
 
-Once completed the prediction step, the effect of the measurements can be taken into account through the estimation equations, described in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (13), (17)). This step, however, is different depending whether we are receiveing Radar or Lidar measurements, and so we need to discriminate between the two.
+Once completed the prediction step, the effect of the measurements can be taken into account through the estimation equations, described in the [ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (13), (17)). This step, however, is different depending whether we are receiveing Radar or Lidar measurements, and so we need to discriminate between the two.
 
 ### _Case of Lidar measurements_
 
@@ -174,14 +174,14 @@ The measurement matrix H and measurement noise matrix R are part of the EKF clas
 
 In case of Radar measurements, some more steps are needed. In this case, in fact, the measurements from the instrument are in terms of radial coordinates, and so:
 
-* The measurement matrix H is replaced by the jacobian Hj calculated as the derivatives of the Radar nonlinear equations, considered at the current state. The expression for Hj can be found in the [ef. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 9, eq. (75)), and is implemented in [tools.cpp](./src/tools.cpp) (lines 52-81). This method is then called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 212, 213):
+* The measurement matrix H is replaced by the jacobian Hj calculated as the derivatives of the Radar nonlinear equations, considered at the current state. The expression for Hj can be found in the [ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 9, eq. (75)), and is implemented in [tools.cpp](./src/tools.cpp) (lines 52-81). This method is then called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 212, 213):
 
 ```sh
     // Calculate and update Jacobian
     Hj_ = tools.CalculateJacobian(ekf_.x_);
 ```
 
-* The measurement update follows equations (102) and (53) in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 11 and 6, respectively.
+* The measurement update follows equations (102) and (53) in the [ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 11 and 6, respectively.
 
 The equations for this case have been implemented in a different method (`UpdateEKF`) in [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 70-117), that gets called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 215-217):
 
