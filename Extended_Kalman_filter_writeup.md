@@ -149,7 +149,7 @@ The expression for F is documented in [Ref. doc](./Docs/sensor-fusion-ekf-refere
       ekf_.Predict();
 ```
 
-NOTE: for calculating Q, beyond the elapsed time a measure of the process noise is also needed. The value provided in input by Udacity for this problem is sigma = 9 (sigma squred = 81), as implemented in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 164-165).
+NOTE: for calculating Q, beyond the elapsed time a measure of the process noise is also needed. The value provided in input by Udacity for this problem is sigma = 9 (sigma squared = 81), as implemented in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 164-165).
 
 ## Estimation
 
@@ -174,8 +174,25 @@ The measurement matrix H and measurement noise matrix R are part of the EKF clas
 
 In case of Radar measurements, some more steps are needed. In this case, in fact, the measurements are in terms of radial coordinates, and so:
 
-* The measurement matrix H is replaced by the jacobian Hj calculated as the derivatives of the nonlinear equations, considered at the current state. The expression for Hj can be found in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 9, eq. (75), and is implemented in [tools.cpp](./src/tools.cpp) (lines 52-81).
+* The measurement matrix H is replaced by the jacobian Hj calculated as the derivatives of the nonlinear equations, considered at the current state. The expression for Hj can be found in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 9, eq. (75), and is implemented in [tools.cpp](./src/tools.cpp) (lines 52-81). This method is then called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 212,213):
 
+```sh
+    // Calculate and update Jacobian
+    Hj_ = tools.CalculateJacobian(ekf_.x_);
+```
+
+* The measurement update follows equations (102) and (53) in [Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 11 and 6, respectively.
+
+The equations for this case have been implemented in a different method (`UpdateEKF`) in [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 70-117), that gets called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 215-217):
+
+```
+    // Set H and R appropriately
+    ekf_.H_ = Hj_;
+    ekf_.R_ = R_radar_;
+
+    // Update
+    ekf_.UpdateEKF(measurement_pack.raw_measurements_);
+```
 
 ## Accuracy Evaluation
 
