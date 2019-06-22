@@ -51,13 +51,13 @@ FusionEKF::FusionEKF() {
 FusionEKF::~FusionEKF() {}
 
 void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
-  
+
   /**
    * Initialization
    */
-  
+
   if (!is_initialized_) {
-    
+
     /**
      * In case the filter is not initialized, it will have to be based on the current state.
      * The matrices to use will be those defined in the constructor, plus the process and covariance
@@ -87,16 +87,18 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     P_in = MatrixXd(4,4);
 
     // Initialize Q matrix matrix to 0
-    Q_in << 0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0;
+    //Q_in << 0.0, 0.0, 0.0, 0.0,
+    //        0.0, 0.0, 0.0, 0.0,
+    //        0.0, 0.0, 0.0, 0.0,
+    //        0.0, 0.0, 0.0, 0.0;
+    Q_in = MatrixXd::Zero(4,4);
 
     // Initialize F matrix to identity
-    F_in << 1.0, 0.0, 0.0, 0.0,
-            0.0, 1.0, 0.0, 0.0,
-            0.0, 0.0, 1.0, 0.0,
-            0.0, 0.0, 0.0, 1.0;
+    //F_in << 1.0, 0.0, 0.0, 0.0,
+    //        0.0, 1.0, 0.0, 0.0,
+    //        0.0, 0.0, 1.0, 0.0,
+    //        0.0, 0.0, 0.0, 1.0;
+    F_in = MatrixXd::Identity(4,4);
 
     // Initialize P matrix with a big value
     P_in << 1000.0, 0.0, 0.0, 0.0,
@@ -171,9 +173,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   F_p = MatrixXd(4,4);
 
   // helping coefficients to calculate Q
-  float c1 = (pow(elapsed_time,4.0))/4.0;
-  float c2 = (pow(elapsed_time,3.0))/2.0;
-  float c3 = pow(elapsed_time, 2.0);
+  const float c1 = (pow(elapsed_time,4.0))/4.0;
+  const float c2 = (pow(elapsed_time,3.0))/2.0;
+  const float c3 = pow(elapsed_time, 2.0);
 
   // Update Q, F
   Q_p << (c1*noise_ax), 0.0, (c2*noise_ax), 0.0,

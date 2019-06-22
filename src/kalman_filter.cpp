@@ -64,7 +64,8 @@ void KalmanFilter::Update(const VectorXd &z) {
    x_ = x_ + (K_ * y_);
 
    // Updated P
-   P_ = (I - K_ * H_) * P_;
+   //P_ = (I - K_ * H_) * P_;
+   P_ -= K_ * H_ * P_;
 }
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
@@ -81,25 +82,33 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 
    float h0 = sqrt((px*px)+(py*py));
 
-   float h1 = 0.0;
+   float h1 = atan2(py,px);
    // NOTE: the following if/else helps in dealing with the position from positive to negative y.
    // This condition has, in fact, shown some non-smooth behavior in simulations
-   if (abs(py)>0.05){
-     h1 = atan2(py,px);
-   } else {
-     h1 = atan2(0.0,px);
-   }
+   //if (abs(py)>0.05){
+  //   h1 = atan2(py,px);
+   //} else {
+  //   h1 = atan2(0.0,px);
+  // }
 
    float h2 = ((px*vx)+(py*vy))/h0;
 
    VectorXd y_;
    y_ = VectorXd(3);
+   VectorXd z_pred;
+   z_pred = VectorXd(3);
 
-   float y0 = z[0] - h0;
-   float y1 = z[1] - h1;
-   float y2 = z[2] - h2;
+   z_pred << h0, h1, h2;
+   y_ = z - z_pred;
 
-   y_ << y0, y1, y2;
+   // Normalize y_(1)
+   NormalizeAngle(y_(1));
+
+   //float y0 = z[0] - h0;
+   //float y1 = z[1] - h1;
+   //float y2 = z[2] - h2;
+
+   //y_ << y0, y1, y2;
 
    MatrixXd Ht_ = H_.transpose();
    MatrixXd S_ = H_ * P_ * Ht_ + R_;
@@ -114,4 +123,9 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 
    // Updated P
    P_ = (I - K_ * H_) * P_;
+}
+
+void KalmanFilter::NormalizeAngle(double& phi)
+{
+    phi = atan2(sin(phi), cos(phi));
 }
