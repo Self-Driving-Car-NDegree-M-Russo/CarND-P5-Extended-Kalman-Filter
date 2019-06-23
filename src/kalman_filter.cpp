@@ -74,10 +74,9 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
    VectorXd y_;
    VectorXd z_pred;
 
-   //y_ = VectorXd(3);
-   //z_pred = VectorXd(3);
-
+   z_pred = VectorXd(3);
    z_pred << h0, h1, h2;
+
    y_ = z - z_pred;
 
    // Normalize y_(1) in the [-pi,pi] range
@@ -94,11 +93,11 @@ void KalmanFilter::UpdateCommon(const VectorXd& y)
   const MatrixXd K = PHt * S.inverse();
 
   // Updated state
-  //x_ = x_ + (K_ * y_);
+  // x_ = x_ + (K_ * y_);
   x_ += K * y;
 
   // Updated P
-  //P_ = (I - K_ * H_) * P_;
+  // P_ = (I - K_ * H_) * P_;
   P_ -= K * H_ * P_;
 }
 
