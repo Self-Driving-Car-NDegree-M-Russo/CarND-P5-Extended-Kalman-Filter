@@ -62,11 +62,10 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
    float vy = x_state(3);
 
    // pre-compute a set of terms to avoid repeated calculation
-   const float eps = 0.001; // used to prevent division by 0
+   const float eps = 0.001; // used to prevent division by 0 in the following
    const float c1 = std::max(eps, px*px + py*py);
    const float c2 = sqrt(c1);
    const float c3 = (c1*c2);
-
 
    // compute the Jacobian matrix
    Hj << (px/c2), (py/c2), 0, 0,

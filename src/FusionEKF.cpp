@@ -87,17 +87,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     P_in = MatrixXd(4,4);
 
     // Initialize Q matrix matrix to 0
-    //Q_in << 0.0, 0.0, 0.0, 0.0,
-    //        0.0, 0.0, 0.0, 0.0,
-    //        0.0, 0.0, 0.0, 0.0,
-    //        0.0, 0.0, 0.0, 0.0;
     Q_in = MatrixXd::Zero(4,4);
 
     // Initialize F matrix to identity
-    //F_in << 1.0, 0.0, 0.0, 0.0,
-    //        0.0, 1.0, 0.0, 0.0,
-    //        0.0, 0.0, 1.0, 0.0,
-    //        0.0, 0.0, 0.0, 1.0;
     F_in = MatrixXd::Identity(4,4);
 
     // Initialize P matrix with a big value

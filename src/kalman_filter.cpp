@@ -24,7 +24,6 @@ void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
   H_ = H_in;
   R_ = R_in;
   Q_ = Q_in;
-
 }
 
 void KalmanFilter::Predict() {
@@ -52,21 +51,7 @@ void KalmanFilter::Update(const VectorXd &z) {
    // measurement update
    VectorXd y_ = z - H_ * x_;
 
-   //MatrixXd Ht_ = H_.transpose();
-   //MatrixXd S_ = H_ * P_ * Ht_ + R_;
-   //MatrixXd Si_ = S_.inverse();
-   //MatrixXd K_ =  P_ * Ht_ * Si_;
-
-   //Identity matrix
-   //MatrixXd I = MatrixXd::Identity(4, 4);
-
-   // Updated state
-   //x_ = x_ + (K_ * y_);
-
-   // Updated P
-   //P_ = (I - K_ * H_) * P_;
-   //P_ -= K_ * H_ * P_;
-
+   // Call common update method
    UpdateCommon(y_);
 }
 
@@ -83,51 +68,23 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
    float vy = x_[3];
 
    float h0 = sqrt((px*px)+(py*py));
-
    float h1 = atan2(py,px);
-   // NOTE: the following if/else helps in dealing with the position from positive to negative y.
-   // This condition has, in fact, shown some non-smooth behavior in simulations
-   //if (abs(py)>0.05){
-  //   h1 = atan2(py,px);
-   //} else {
-  //   h1 = atan2(0.0,px);
-  // }
-
    float h2 = ((px*vx)+(py*vy))/h0;
 
    VectorXd y_;
    VectorXd z_pred;
 
-   y_ = VectorXd(3);
-   z_pred = VectorXd(3);
+   //y_ = VectorXd(3);
+   //z_pred = VectorXd(3);
 
    z_pred << h0, h1, h2;
    y_ = z - z_pred;
 
-   // Normalize y_(1)
+   // Normalize y_(1) in the [-pi,pi] range
    NormalizeAngle(y_(1));
 
-   //float y0 = z[0] - h0;
-   //float y1 = z[1] - h1;
-   //float y2 = z[2] - h2;
-
-   //y_ << y0, y1, y2;
-
-   //MatrixXd Ht_ = H_.transpose();
-   //MatrixXd S_ = H_ * P_ * Ht_ + R_;
-  // MatrixXd Si_ = S_.inverse();
-   //MatrixXd K_ =  P_ * Ht_ * Si_;
-
-   //Identity matrix
-   //MatrixXd I = MatrixXd::Identity(4, 4);
-
-   // Updated state
-  //x_ = x_ + (K_ * y_);
-
-   // Updated P
-   //P_ = (I - K_ * H_) * P_;
+   // Call common update method
    UpdateCommon(y_);
-
 }
 
 void KalmanFilter::UpdateCommon(const VectorXd& y)
@@ -136,11 +93,19 @@ void KalmanFilter::UpdateCommon(const VectorXd& y)
   const MatrixXd S = H_ * PHt + R_;
   const MatrixXd K = PHt * S.inverse();
 
+  // Updated state
+  //x_ = x_ + (K_ * y_);
   x_ += K * y;
+
+  // Updated P
+  //P_ = (I - K_ * H_) * P_;
   P_ -= K * H_ * P_;
 }
 
 void KalmanFilter::NormalizeAngle(double& phi)
 {
-    phi = atan2(sin(phi), cos(phi));
+  /**
+   * Normalize angle in input in the [-pi,pi] range
+   */
+   phi = atan2(sin(phi), cos(phi));
 }
