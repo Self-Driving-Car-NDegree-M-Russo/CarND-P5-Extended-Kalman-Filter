@@ -78,10 +78,10 @@ The measurements are processed through the command in line 111:
 
 ## Initialization
 
-The first thing that happens to the filter is to have its state initialized at the value of the first measurement ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 59-155).
+The first thing that happens to the filter is to have its state initialized at the value of the first measurement ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 59-139).
 
 The EKF implementation has a state composed by 4 variables: position and velocity of the tracked object, in 2D ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 2, eq. (18)). 
-In case of initial reading, the position can be initialized to the current one of the tracked vehicle, while the velocity can be put to 0. Depending on wether the first measurement is a Radar or a Lidar some trigonometric decomposition might be needed: this is handled in [FusionEKF.cpp](./src/FusionEKF.cpp), lines 107-137. For example, in the case of Radar we have (lines 111-118):
+In case of initial reading, the position can be initialized to the current one of the tracked vehicle, while the velocity can be put to 0. Depending on wether the first measurement is a Radar or a Lidar some trigonometric decomposition might be needed: this is handled in [FusionEKF.cpp](./src/FusionEKF.cpp), lines 101-131. For example, in the case of Radar we have (lines 105-112):
 
 ```sh
       float rho = measurement_pack.raw_measurements_[0];
@@ -98,9 +98,9 @@ NOTE: `vx, vy` are initialized = 0 on lines 76, 77.
 
 Besides the state, the matrices have to be intialized also. Specifically:
 
-* The state matrix F has an expression that depnds on the elapsed time ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 3, eq. (21)). In case of first reading it can be initailized as a (4x4) identity matrix ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 95-99). Its actual value would be calculated and updated when processing next measurements.
-* The process noise covariance matrix also has an expression depending on time ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 4, eq. (40)), but can be initialized to a (4x4) null matrix ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 89-93). Here too, the actual value will be calculated when new measurements become available.
-* The estimation error covariance matrix can be initialized to a "big" value ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 101-105).
+* The state matrix F has an expression that depnds on the elapsed time ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 3, eq. (21)). In case of first reading it can be initailized as a (4x4) identity matrix ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 92, 93). Its actual value would be calculated and updated when processing next measurements.
+* The process noise covariance matrix also has an expression depending on time ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 4, eq. (40)), but can be initialized to a (4x4) null matrix ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 89, 90). Here too, the actual value will be calculated when new measurements become available.
+* The estimation error covariance matrix can be initialized to a "big" value ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 95-99).
 
 Other matices are actually defined in the EKF class contructor:
 
@@ -108,14 +108,14 @@ Other matices are actually defined in the EKF class contructor:
 * The measurement matrix for the Lidar case is a constant (2x4) ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 5, eq. (42)), and is introduced in [FusionEKF.cpp](./src/FusionEKF.cpp), lines 36-38.
 * Finally, the measurement matrix for the Radar case will actually have to be calculated at every meadurement, given the nonlinear nature of the sensor. Initialization is just to a null (3x4) matrix ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 40-44).
 
-With all the state and the matrices defined, the initialization happens by calling the `Init` method defined in [kalman_filter.cpp](./src/kalman_filter.cpp), lines 19-28. The actual parameters passed will depend on the nature of the first measurement; for example, in case of Radar we have ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 120, 121):
+With all the state and the matrices defined, the initialization happens by calling the `Init` method defined in [kalman_filter.cpp](./src/kalman_filter.cpp), lines 19-28. The actual parameters passed will depend on the nature of the first measurement; for example, in case of Radar we have ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 114, 115):
 
 ```sh
       // Initialize
       ekf_.Init(x_in, P_in, F_in, Hj_, R_radar_, Q_in);
 ```
 
-while, for Lidar ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 134, 135):
+while, for Lidar ([FusionEKF.cpp](./src/FusionEKF.cpp), lines 128, 129):
 
 ```sh
       // Initialize
