@@ -45,8 +45,17 @@ class KalmanFilter {
    */
   void UpdateEKF(const Eigen::VectorXd &z);
 
+  /**
+   * Groups together the quations that are common to both linear and 
+   * extended updates
+   * @param y the measurement update at k+1
+   */
   void UpdateCommon(const Eigen::VectorXd& y);
 
+  /**
+   * Normalizes an angle in the [-pi,pi]  range
+   * @param phi the angle (in radians) to normalize
+   */
   void NormalizeAngle(double& phi);
 
   // state vector
