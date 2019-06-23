@@ -18,6 +18,10 @@ KalmanFilter::~KalmanFilter() {}
 
 void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
                         MatrixXd &H_in, MatrixXd &R_in, MatrixXd &Q_in) {
+  /**
+   * Initializes Kalman filter
+   */
+
   x_ = x_in;
   P_ = P_in;
   F_ = F_in;
@@ -88,6 +92,11 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 
 void KalmanFilter::UpdateCommon(const VectorXd& y)
 {
+  /**
+   * Groups together the quations that are common to both linear and
+   * extended updates
+   */
+
   const MatrixXd PHt = P_ * H_.transpose();
   const MatrixXd S = H_ * PHt + R_;
   const MatrixXd K = PHt * S.inverse();
