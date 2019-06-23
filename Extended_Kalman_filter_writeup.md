@@ -157,7 +157,7 @@ Once completed the prediction step, the effect of the measurements can be taken 
 
 ### _Common estimation update_
 
-The nonlinearity of the Radar use case affects the actual meaurement update equation. All the others ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 2, eq. (14) to (17)) stay the same, and so they are grouped in the `UpdateCommon` method of [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 93-11)
+The nonlinearity of the Radar use case affects the actual meaurement update equation. All the others ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 2, eq. (14) to (17)) stay the same, and so they are grouped in the `UpdateCommon` method of [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 93-11).
 
 ### _Case of Lidar measurements_
 
