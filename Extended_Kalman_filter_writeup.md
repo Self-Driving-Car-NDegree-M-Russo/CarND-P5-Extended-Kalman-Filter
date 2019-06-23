@@ -153,13 +153,17 @@ NOTE: for calculating Q, beyond the elapsed time a measure of the process noise 
 
 ## Estimation
 
-Once completed the prediction step, the effect of the measurements can be taken into account through the estimation equations, described in the [ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (13), (17)). This step, however, is different depending whether we are receiveing Radar or Lidar measurements, and so we need to discriminate between the two.
+Once completed the prediction step, the effect of the measurements can be taken into account through the estimation equations, described in the [ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 2, eq. (13) to (17)). This step, however, is different depending whether we are receiveing Radar or Lidar measurements, and so we need to discriminate between the two. More specifically, we are going to identify the equations that are common to both cases, and factor them in their own method, and then consider what is left indepndently.
+
+### _Common estimation update_
+
+The nonlinearity of the Radar use case affects the actual meaurement update equation. All the others ([Ref. doc](./Docs/sensor-fusion-ekf-reference.pdf), pg. 2, eq. (14) to (17)) stay the same, and so they are grouped in the `UpdateCommon` method of [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 93-11)
 
 ### _Case of Lidar measurements_
 
-The case of Lidar updates is actually the simplest one. This instrument is, in fact, capable of measuring directly the position of the vehicle in cartesian coordinates, so there is no need for linearization of the problem. The equations are implemented in the `Update` method in [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 47-68).
+The case of Lidar updates is actually the simplest one. This instrument is, in fact, capable of measuring directly the position of the vehicle in cartesian coordinates, so there is no need for linearization of the problem. The equations are implemented in the `Update` method in [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 50-60).
 
-The measurement matrix H and measurement noise matrix R are part of the EKF class constructor [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 27-29 and 36-38, respectively), and can be passed to the actual implementation before calling the method, as shown in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 226-231):
+The measurement matrix H and measurement noise matrix R are part of the EKF class constructor [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 27-29 and 36-38, respectively), and can be passed to the actual implementation before calling the method, as shown in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 220-225):
 
 ```sh
     // Set H and R appropriately
@@ -174,7 +178,7 @@ The measurement matrix H and measurement noise matrix R are part of the EKF clas
 
 In case of Radar measurements, some more steps are needed. In this case, in fact, the measurements from the instrument are in terms of radial coordinates, and so:
 
-* The measurement matrix H is replaced by the jacobian Hj calculated as the derivatives of the Radar nonlinear equations, considered at the current state. The expression for Hj can be found in the [ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 9, eq. (75)), and is implemented in [tools.cpp](./src/tools.cpp) (lines 52-81). This method is then called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 212, 213):
+* The measurement matrix H is replaced by the jacobian Hj calculated as the derivatives of the Radar nonlinear equations, considered at the current state. The expression for Hj can be found in the [ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 9, eq. (75)), and is implemented in [tools.cpp](./src/tools.cpp) (lines 52-76). This method is then called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 206, 207):
 
 ```sh
     // Calculate and update Jacobian
@@ -183,7 +187,7 @@ In case of Radar measurements, some more steps are needed. In this case, in fact
 
 * The measurement update follows equations (102) and (53) in the [ref. doc](./Docs/sensor-fusion-ekf-reference.pdf) (pg. 11 and 6, respectively).
 
-The equations for this case have been implemented in a different method (`UpdateEKF`) in [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 70-117), that gets called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 215-217):
+The equations for this case have been implemented in a different method (`UpdateEKF`) in [kalman_filter.cpp](./src/kalman_filter.cpp) (lines 62-91), that gets called in [FusionEKF.cpp](./src/FusionEKF.cpp) (lines 209-214):
 
 ```
     // Set H and R appropriately
